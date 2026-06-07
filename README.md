@@ -1,23 +1,32 @@
 # Storytime
 
-Digitize your physical picture books and have them read aloud to your kids — in **your own voice**.
+**Your kid's favorite book. Your voice. Even when you're not there.**
 
-Storytime lets parents upload photos of book pages, automatically transcribe the text via OCR, record a short voice sample, and generate audio for every page using local AI voice cloning. Kids get a tap-to-play, swipe-to-turn reading experience on any device.
+Take any picture book your child loves. Photograph each page, upload it, and record 5–10 seconds of your voice. Storytime does the rest — generating audio for every page in your voice using local AI. A few minutes later, your child can tap play and hear the whole book read aloud by you, in your voice, on their own.
 
-Everything runs locally on your Mac. No cloud, no subscriptions, no data leaving your home.
+Free. No internet required. Runs entirely on your Mac.
 
-| Parent portal (`/parent`) | Kids reader |
+| Parent portal | Kids reader |
 |---|---|
 | ![Parent portal showing book pages with OCR text and audio controls](docs/screenshot-parent.png) | ![Kids reader showing full-bleed book page with play button](docs/screenshot-reader.jpeg) |
 
 ---
 
+## How it works
+
+1. **Photograph the pages** — take a photo of each page with your phone and upload them. Text is extracted automatically via OCR.
+2. **Record 5–10 seconds of your voice** — read any sentence aloud and save the clip.
+3. **Hit Generate** — Storytime clones your voice and produces audio for every page. Takes a few minutes on Apple Silicon.
+4. **Hand it to your kid** — they tap ▶ and the book reads itself in your voice, page by page.
+
+---
+
 ## Requirements
 
-- **Mac with Apple Silicon** (M1 or later) — required for both OCR and the voice model
+- **Mac with Apple Silicon** (M1 or later)
 - **macOS 13 Ventura or later**
 - **Python 3.12+**
-- **~4 GB free disk** for the Qwen3-TTS voice model (downloaded once on first use, cached in `~/.cache/huggingface`)
+- **~4 GB free disk** for the voice model (downloaded once, cached locally)
 
 ---
 
@@ -26,7 +35,7 @@ Everything runs locally on your Mac. No cloud, no subscriptions, no data leaving
 **1. Clone the repo**
 
 ```bash
-git clone https://github.com/your-username/storytime.git
+git clone https://github.com/pengyaoc/storytime.git
 cd storytime
 ```
 
@@ -44,99 +53,57 @@ pip install -r requirements.txt
 python main.py
 ```
 
-The server starts at `http://localhost:8000`. Open it in any browser on your Mac.
+Open `http://localhost:8000` in your browser.
 
-> The first time you generate audio, the Qwen3-TTS model (~4 GB) will download automatically. This takes a few minutes depending on your connection. Subsequent runs use the cached model.
+> The first time you generate audio, the Qwen3-TTS model (~4 GB) downloads automatically. Subsequent runs use the cached model — no internet needed.
 
 ---
 
 ## Usage
 
-### Parent setup (do this once per book)
+### Parent setup (one-time per book)
 
 1. Go to **`http://localhost:8000/parent`**
-2. Click **+ New Book** and enter a title
-3. Drag your book page photos into the dropzone — OCR runs automatically on each page. Review and correct any text.
-4. Click **Manage voices…** to create a voice profile:
-   - Record yourself reading any sentence (3–10 seconds), save as a WAV/MP3/M4A file
-   - Upload the clip and type its exact transcript
-   - Give the profile a name (e.g. "Mom")
-5. Select the voice profile from the book's dropdown
-6. Click **Generate All Audio** — each page is processed and shown as ready when done
-7. Copy the reader link and bookmark it on your child's tablet
+2. Click **+ New Book** and enter the title
+3. Drag in your page photos — OCR extracts the text automatically. Review and fix any errors.
+4. Click **Manage voices…**, upload your 5–10s voice clip, and enter its exact transcript
+5. Select your voice profile from the dropdown
+6. Click **Generate All Audio** and wait a few minutes
+7. Bookmark the reader link on your child's tablet
 
 ### Child reading
 
-Open `http://localhost:8000` (or the direct book link) on any device on your home network.
-
-- Tap the **▶ button** to hear the page read aloud
-- Tap the **arrows** or **swipe** to turn pages
-- Enable **Auto-play** to have the book read itself all the way through
+Open `http://localhost:8000` on any device on your home network. Tap ▶ to play, swipe to turn pages, or enable **Auto-play** to let the book read itself all the way through.
 
 ---
 
-## Accessing from other devices (tablets, phones)
+## Accessing from a tablet or phone
 
-The server binds to `0.0.0.0:8000`, so any device on your local network can reach it.
-
-Find your Mac's local IP address:
+Find your Mac's local IP:
 
 ```bash
 ipconfig getifaddr en0
 ```
 
-Then open `http://<your-mac-ip>:8000` on the child's device and bookmark it.
+Open `http://<your-mac-ip>:8000` on the child's device and bookmark it.
 
 ---
 
-## Project structure
+## How it works under the hood
 
-```
-storytime/
-├── main.py              # FastAPI app, route definitions
-├── requirements.txt
-├── backend/
-│   ├── routes.py        # API endpoints
-│   ├── books.py         # Book/page data (JSON files)
-│   ├── ocr.py           # Apple Vision OCR
-│   ├── tts.py           # Voice cloning via mlx-audio
-│   ├── preferences.py   # Voice profile storage
-│   └── models.py        # MLX model lifecycle
-└── frontend/
-    ├── picker.html       # Book selection screen (child)
-    ├── picker.js
-    ├── reader.html       # Reading screen (child)
-    ├── reader.js
-    ├── index.html        # Parent portal (/parent)
-    └── admin.js
-```
-
-Data created at runtime (excluded from git):
-
-| Directory | Contents |
-|---|---|
-| `books/` | Book metadata JSON files |
-| `uploads/` | Uploaded page images |
-| `audio_output/` | Generated WAV files |
-| `voice_clips/` | Reference audio clips and voice profile config |
-
----
-
-## How it works
-
-- **OCR** — Apple Vision Framework (`VNRecognizeTextRequest`) runs on-device, no API key needed. Supports English, Simplified Chinese, Traditional Chinese, and more.
-- **Voice cloning** — [mlx-audio](https://github.com/Blaizzy/mlx-audio) runs Qwen3-TTS locally on Apple Silicon via MLX. A 3–10 second reference clip is enough to clone a voice.
-- **Storage** — No database. Books are JSON files; media is stored as flat files.
-- **Server** — FastAPI + Uvicorn. Audio generation streams progress page-by-page via NDJSON.
+- **OCR** — Apple Vision Framework, on-device, no API key needed. Supports English, Chinese, and more.
+- **Voice cloning** — [mlx-audio](https://github.com/Blaizzy/mlx-audio) runs Qwen3-TTS locally on Apple Silicon. 5–10 seconds of audio is all it needs.
+- **No database** — books are JSON files, media is stored as flat files.
+- **No cloud** — everything stays on your Mac.
 
 ---
 
 ## Limitations
 
-- macOS + Apple Silicon only (Vision Framework and MLX are Apple-specific)
-- No authentication — designed for trusted home network use only
-- One audio generation job at a time (MLX runs single-threaded)
-- No in-app voice recording; record externally and upload the clip
+- macOS + Apple Silicon only
+- No authentication — designed for home network use
+- One book generates at a time (pages are processed sequentially)
+- Voice recording happens outside the app; upload the clip after recording
 
 ---
 
