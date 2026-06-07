@@ -176,7 +176,7 @@ function renderPageCard(page) {
     <div class="bg-white border border-gray-200 rounded-lg overflow-hidden" id="page-card-${page.page_number}">
       <div class="flex">
         <div class="w-28 shrink-0 bg-gray-50">
-          <img src="${imgSrc}" alt="Page ${page.page_number}" class="w-full h-full object-cover" style="max-height:140px">
+          <img src="${imgSrc}" alt="Page ${page.page_number}" class="w-full h-full object-contain" style="max-height:140px">
         </div>
         <div class="flex-1 p-3 flex flex-col gap-2">
           <div class="flex items-center justify-between">
