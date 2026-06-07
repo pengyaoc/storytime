@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Storytime — Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; }
+    .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #e5e7eb; border-top-color: #6366f1; border-radius: 50%; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .dropzone-active { border-color: #6366f1 !important; background: #eef2ff !important; }
+    textarea { resize: vertical; }
+  </style>
+</head>
+<body class="bg-gray-100 h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-4 shrink-0">
+    <h1 class="text-lg font-semibold text-gray-900">Storytime</h1>
+    <span class="text-gray-300">|</span>
+    <span class="text-sm text-gray-500">Admin</span>
+    <div class="ml-auto" id="reader-link-container"></div>
+  </header>
+
+  <div class="flex flex-1 min-h-0">
+
+    <!-- Left sidebar: book list -->
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col shrink-0">
+      <div class="p-3 border-b border-gray-200">
+        <button id="new-book-btn" class="w-full text-sm bg-indigo-600 text-white rounded px-3 py-2 hover:bg-indigo-700 font-medium">+ New Book</button>
+      </div>
+      <div id="book-list" class="flex-1 overflow-y-auto text-sm"></div>
+    </aside>
+
+    <!-- Main area -->
+    <main class="flex-1 overflow-y-auto p-6" id="main-area">
+      <div class="text-gray-400 text-sm mt-16 text-center">Select or create a book to get started.</div>
+    </main>
+  </div>
+
+  <!-- New book modal -->
+  <div id="new-book-modal" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl p-6 w-80">
+      <h2 class="font-semibold text-gray-900 mb-4">New Book</h2>
+      <input id="new-book-title" type="text" placeholder="Book title" class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      <div class="flex gap-2 justify-end">
+        <button id="new-book-cancel" class="text-sm px-4 py-2 rounded border border-gray-300 hover:bg-gray-50">Cancel</button>
+        <button id="new-book-create" class="text-sm px-4 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700 font-medium">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Voice profile modal -->
+  <div id="voice-modal" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl p-6 w-[480px] max-h-[80vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-semibold text-gray-900">Voice Profiles</h2>
+        <button id="voice-modal-close" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+      </div>
+
+      <!-- Upload clip -->
+      <div class="mb-5">
+        <label class="text-xs font-medium text-gray-600 uppercase tracking-wide block mb-1">Upload Reference Clip</label>
+        <div class="flex gap-2">
+          <input id="clip-file-input" type="file" accept=".wav,.mp3,.m4a,.aac,.flac,.ogg,.webm" class="hidden">
+          <button id="clip-upload-btn" class="text-sm px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-50">Choose file…</button>
+          <span id="clip-upload-status" class="text-sm text-gray-400 self-center"></span>
+        </div>
+      </div>
+
+      <!-- Create profile form -->
+      <div class="border border-gray-200 rounded p-3 mb-5">
+        <label class="text-xs font-medium text-gray-600 uppercase tracking-wide block mb-2">Create Profile</label>
+        <input id="profile-name" type="text" placeholder="Name (e.g. Mom, Dad)" class="w-full border border-gray-300 rounded px-2 py-1.5 text-sm mb-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <select id="profile-clip" class="w-full border border-gray-300 rounded px-2 py-1.5 text-sm mb-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <option value="">— choose a clip —</option>
+        </select>
+        <textarea id="profile-ref-text" rows="3" placeholder="Exact transcript of the reference clip…" class="w-full border border-gray-300 rounded px-2 py-1.5 text-sm mb-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+        <button id="profile-create-btn" class="text-sm px-3 py-1.5 bg-indigo-600 text-white rounded hover:bg-indigo-700 font-medium">Save Profile</button>
+        <span id="profile-create-status" class="text-sm text-gray-400 ml-2"></span>
+      </div>
+
+      <!-- Profiles list -->
+      <div id="profiles-list" class="space-y-2"></div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+fastapi==0.115.12
+uvicorn[standard]==0.34.2
+python-multipart==0.0.20
+mlx-audio
+soundfile>=0.13.1
+pyobjc-framework-Vision>=10.0
+pyobjc-framework-Quartz>=10.0
+pillow>=10.0.0
+pillow-heif>=0.18.0

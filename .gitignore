@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.python-version
+venv/
+.venv/
+env/
+
+# Environment
+.env
+.env.*
+
+# Generated data (books, uploads, audio)
+books/
+uploads/
+audio_output/
+voice_clips/
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Audio artifacts
+*.wav
+*.mp3
+*.m4a
+
+# Internal tooling
+.superpowers/
