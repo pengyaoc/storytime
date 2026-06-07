@@ -6,11 +6,9 @@ Take any picture book your child loves. Photograph each page, upload it, and rec
 
 Free. No internet required. Runs entirely on your Mac.
 
-**Parent portal** (`/parent`)
-![Parent portal showing book pages with OCR text and audio controls](docs/screenshot-parent.png)
-
-**Kids reader**
-![Kids reader showing full-bleed book page with play button](docs/screenshot-reader.jpeg)
+| Kids reader | Parent portal |
+|---|---|
+| ![Kids reader showing full-bleed book page with play button](docs/screenshot-reader.jpeg) | ![Parent portal showing book pages with OCR text and audio controls](docs/screenshot-parent.png) |
 
 ---
 
