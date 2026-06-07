@@ -6,6 +6,10 @@ Storytime lets parents upload photos of book pages, automatically transcribe the
 
 Everything runs locally on your Mac. No cloud, no subscriptions, no data leaving your home.
 
+| Parent portal (`/parent`) | Kids reader |
+|---|---|
+| ![Parent portal showing book pages with OCR text and audio controls](docs/screenshot-parent.png) | ![Kids reader showing full-bleed book page with play button](docs/screenshot-reader.jpeg) |
+
 ---
 
 ## Requirements
