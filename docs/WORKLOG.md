@@ -13,7 +13,7 @@
   - **Reader layout**: Full-bleed illustration, white gradient scrim at bottom, page text above centered play button
   - **Page transitions**: CSS translateX slide (300ms, double-rAF pattern)
   - **Admin UI**: Utilitarian two-column, no decorative elements
-- Wrote implementation plan to `/Users/pengyao/.claude/plans/`
+- Wrote implementation plan to local plans directory
 
 ### Backend
 

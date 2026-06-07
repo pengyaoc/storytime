@@ -59,7 +59,7 @@ app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
 - [ ] **Step 2: Verify the server starts without error**
 
 ```bash
-cd /Users/pengyao/Documents/dev/storytime
+cd /path/to/storytime
 python -m uvicorn main:app --port 8000
 ```
 
@@ -423,7 +423,7 @@ loadBooks();
 - [ ] **Step 2: Start the server and open `http://localhost:8000/reader` in a browser**
 
 ```bash
-cd /Users/pengyao/Documents/dev/storytime
+cd /path/to/storytime
 python -m uvicorn main:app --reload --port 8000
 ```
 
